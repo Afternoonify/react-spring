@@ -5,7 +5,7 @@ import { SpringUpdateFn, SpringStopFn } from '../lib/useSpring';
 const items: string[] = [];
 
 test('pass an array', () => {
-  const springs = useSprings(
+  const [springs] = useSprings(
     items.length,
     items.map(item => {
       assert(item, _ as string);

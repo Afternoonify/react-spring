@@ -3,7 +3,7 @@ import { useTrail, SpringValue } from '../web';
 import { SpringUpdateFn, SpringStopFn } from '../lib/useSpring';
 
 test('basic usage', () => {
-  const springs = useTrail(3, { opacity: 1 });
+  const [springs] = useTrail(3, { opacity: 1 });
   assert(springs, _ as Array<{
     [key: string]: SpringValue<any>;
     opacity: SpringValue<number>;

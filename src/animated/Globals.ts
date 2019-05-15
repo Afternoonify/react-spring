@@ -32,6 +32,8 @@ export let createStringInterpolator: (
 // Optional
 //
 
+export let config: void | object = undefined
+
 export let now = () => Date.now()
 
 export let colorNames: { [key: string]: number } = {}
@@ -90,6 +92,7 @@ export const assign = (globals: AnimatedGlobals): AnimatedGlobals =>
     requestAnimationFrame,
     cancelAnimationFrame,
     manualFrameloop,
+    config,
   } = Object.assign(
     {
       colorNames,
@@ -103,6 +106,7 @@ export const assign = (globals: AnimatedGlobals): AnimatedGlobals =>
       requestAnimationFrame,
       cancelAnimationFrame,
       manualFrameloop,
+      config,
     },
     globals
   ))

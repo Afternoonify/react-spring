@@ -9,7 +9,12 @@ import {
 import { start, stop } from './FrameLoop'
 import { SpringProps, SpringConfig } from '../../types/renderprops'
 import { Omit, Indexable, Arrify, OnEnd, Falsy } from '../types/common'
-import { colorNames, createStringInterpolator, now } from './Globals'
+import {
+  colorNames,
+  createStringInterpolator,
+  now,
+  config as globalConfig,
+} from './Globals'
 import { AnimatedInterpolation } from './AnimatedInterpolation'
 import { AnimatedValueArray } from './AnimatedValueArray'
 import { AnimatedValue } from './AnimatedValue'
@@ -320,6 +325,7 @@ export class Controller<State extends Indexable = any> {
 
   // Update the props and animations
   private _run(props: UpdateProps<State>, onEnd: OnEnd) {
+    if (globalConfig) props = { ...props, ...globalConfig }
     if (is.arr(props.to) || is.fun(props.to)) {
       this._runAsync(props, onEnd)
     } else if (this._diff(props)) {
