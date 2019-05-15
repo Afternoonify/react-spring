@@ -3,8 +3,9 @@ import { callProp, fillArray, is, usePrev } from './shared/helpers'
 import { Controller } from './animated/Controller'
 
 /** API
- * const props = useSprings(number, [{ ... }, { ... }, ...])
- * const [props, set] = useSprings(number, (i, controller) => ({ ... }))
+ * const [props, set, cancel] = useSprings(number, props, [optionalDeps])
+ * const [props, set, cancel] = useSprings(number, [props], [optionalDeps])
+ * const [props, set, cancel] = useSprings(number, index => props, [optionalDeps])
  */
 
 export const useSprings = (length, propsArg, deps) => {
@@ -88,5 +89,5 @@ export const useSprings = (length, propsArg, deps) => {
   }, [])
 
   const values = springs.map(s => ({ ...s.animated }))
-  return isFn ? [values, update, stop] : values
+  return [values, update, stop]
 }
