@@ -20,19 +20,22 @@ export const useTrail = (length, propsArg, deps) => {
   if (hasNewSprings) springs.length = length
 
   // The controllers are recreated whenever `length` changes.
-  const [values, animate, stop] = useSprings(
-    length,
-    (i, spring) => {
-      if (isFn && !props) props = callProp(propsArg) || {}
-      springs[i] = spring
-      return {
-        ...props,
-        config: callProp(props.config, i),
-        attach: i > 0 && (() => springs[i - 1]),
-      }
-    },
-    deps
-  )
+  const [values, animate, stop] = useSprings(length, (i, spring) => {
+    if (isFn && !props) {
+      props = callProp(propsArg, spring) || {}
+    }
+    springs[i] = spring
+    return {
+      ...props,
+      ...(i > 0 && {
+        attach: () => springs[i - 1],
+        onStart: withArgument(props.onStart, i),
+        onFrame: withArgument(props.onFrame, i),
+        onRest: withArgument(props.onRest, i),
+      }),
+      config: callProp(props.config, i),
+    }
+  })
 
   /** For imperative updates to the props of all springs in the trail */
   const update = useCallback(
@@ -42,8 +45,8 @@ export const useTrail = (length, propsArg, deps) => {
         const parent = springsRef.current[props.reverse ? i + 1 : i - 1]
         return {
           ...props,
+          ...(!!parent && { attach: () => parent }),
           config: callProp(props.config, i),
-          attach: !!parent && (() => parent),
         }
       }),
     []
@@ -58,4 +61,8 @@ export const useTrail = (length, propsArg, deps) => {
   })
 
   return [values, update, stop]
+}
+
+function withArgument(fn, arg) {
+  return is.fun(fn) ? (...args) => fn(...args, arg) : fn
 }

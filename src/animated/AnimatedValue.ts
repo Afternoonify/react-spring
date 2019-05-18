@@ -1,4 +1,4 @@
-import { Animated } from './Animated'
+import { Animated, isAnimated } from './Animated'
 import { AnimatedProps } from './AnimatedProps'
 import { Animatable, SpringValue } from '../types/animated'
 import { InterpolatorArgs } from '../types/interpolation'
@@ -51,6 +51,10 @@ export class AnimatedValue<T = number> extends Animated
   public startTime?: number
   public lastTime?: number
   public done = false
+
+  static from(value: any) {
+    return isAnimated(value) ? value : new AnimatedValue(value)
+  }
 
   constructor(value: T) {
     super()
