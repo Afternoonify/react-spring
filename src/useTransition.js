@@ -32,7 +32,7 @@ const makeConfig = props => {
 
 export function useTransition(input, keyTransform, props) {
   // Coerce props to an object
-  props = callProp(props)
+  props = useMemo(() => callProp(props), [])
   props = makeConfig({
     ...props,
     items: input,
