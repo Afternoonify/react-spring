@@ -66,7 +66,7 @@ function createCjs(entry, out) {
         babel(
           getBabelOptions(
             { useESModules: true },
-            '>1%, not dead, not ie 11, not op_mini all'
+            '>1%, not dead, ie 11, not op_mini all'
           )
         ),
         sizeSnapshot(),
